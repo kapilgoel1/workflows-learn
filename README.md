@@ -1,2 +1,2 @@
-"# love-to-learn"
+"# live-to-learn"
 "# kapil is good"
