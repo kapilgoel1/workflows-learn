@@ -1,2 +1,2 @@
-"# love-to-learn" 
+"# die-to-learn" 
 
