@@ -35,6 +35,6 @@ jobs:
           if [ $is_merge_conflict -gt 0 ]
           then
             pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/pulls -d '{"title":"Amazing new feature","body":"Please pull these awesome changes in!","head":"hello","base":"main"}')
-            echo $pr_creation_response
+            pr_url=$(echo $pr_creation_response | jq .url)
           fi
 
