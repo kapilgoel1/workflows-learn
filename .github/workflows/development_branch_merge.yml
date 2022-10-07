@@ -33,7 +33,7 @@ jobs:
               echo "Failed to create a PR. PR may already exists"
             else
               echo "slack the pr url"
-              pr_number = $(echo $pr_creation_response | jq .number)
+              pr_number=$(echo $pr_creation_response | jq .number)
               echo $pr_number
               curl -X POST -F channel=$SLACK_CHANNEL -F text=" Merge conflicts between mmc-server development branch and master branch \n $pr_url" https://slack.com/api/chat.postMessage -H "Authorization: ${{ secrets.SECRET_SLACK_TOKEN }}"
             fi
