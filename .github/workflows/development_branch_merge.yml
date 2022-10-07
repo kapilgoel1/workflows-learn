@@ -20,12 +20,12 @@ jobs:
         env:
           SLACK_CHANNEL: c1234
         run: |
-          merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"same","commit_message":"Shipped cool_feature!"}')
+          merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}')
           echo $merge_result
           is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
           if [ $is_merge_conflict -gt 0 ]
           then
-            pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/pulls -d '{"title":"Merge development branch into master","body":"Please pull these awesome changes in!","head":"hello","base":"main"}')
+            pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/pulls -d '{"title":"Merge development branch into master","body":"Please pull these awesome changes in!","head":"iam2","base":"main"}')
             pr_url=$(echo $pr_creation_response | jq .url)
             echo "PR URL IS $pr_url"
             if [[ "$pr_url" == null ]]
