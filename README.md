@@ -1,3 +1,3 @@
 "# die-to-learn" 
-"# love-for-thyself"
+"# love-for-yu"
 
