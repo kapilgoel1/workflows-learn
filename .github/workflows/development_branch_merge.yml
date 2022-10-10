@@ -21,7 +21,7 @@ jobs:
         run: |
           merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}')
           is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
-          echo "::set-output name=IS_MERGE_CONFLICT::${is_merge_conflict}"
+          # echo "::set-output name=IS_MERGE_CONFLICT::${is_merge_conflict}"
         id: merge-branch
 
       - name: Merge branch output
