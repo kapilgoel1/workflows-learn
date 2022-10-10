@@ -79,7 +79,7 @@ jobs:
           else
             echo "line 80"
             echo $merge_result
-            is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict" || echo "::error::Unexpected version" && exit 1)
+            is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict" || echo 0 && exit 1)
             echo "line 82"
             echo $is_merge_conflict
             echo "line 84"
