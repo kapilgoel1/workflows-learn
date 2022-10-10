@@ -16,21 +16,21 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
 
-      - name: Merge branch
-        continue-on-error: true
-        run: |
-          merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}')
-          echo "testing"
-          echo $merge_result
-          if [ -z "$merge_result" ] 
-          then 
-            echo "NULL";
-          else
-            is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
-            echo $is_merge_conflict
-          fi
-          echo "hello"
-        id: merge-branch
+      # - name: Merge branch
+      #   continue-on-error: true
+      #   run: |
+      #     merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}')
+      #     echo "testing"
+      #     echo $merge_result
+      #     if [ -z "$merge_result" ] 
+      #     then 
+      #       echo "NULL";
+      #     else
+      #       is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+      #       echo $is_merge_conflict
+      #     fi
+      #     echo "hello"
+      #   id: merge-branch
 
       # - name: Merge branch output
       #   if: ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT > 0 }}
