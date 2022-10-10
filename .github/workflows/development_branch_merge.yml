@@ -19,12 +19,13 @@ jobs:
       - name: Merge branch
         continue-on-error: true
         run: |
-          merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" --fail https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}' || true)
-          echo "::set-output name=MERGE_RESULT::${merge_result}"
+          merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" --fail https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}')
+          is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+          echo "::set-output name=IS_MERGE_CONFLICT::${is_merge_conflict}"
         id: merge-branch
 
       - name: Merge branch output
-        run: echo "The selected color is ${{ steps.merge-branch.outputs.MERGE_RESULT }}"
+        run: echo "The selected color is ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }}"
 
 
       # - name: Run a multi-line script
