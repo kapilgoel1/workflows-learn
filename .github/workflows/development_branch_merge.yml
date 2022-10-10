@@ -77,10 +77,14 @@ jobs:
           then 
             echo "NULL";
           else
+            echo "line 80"
             is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+            echo "line 82"
             echo $is_merge_conflict
+            echo "line 84"
             if [ $is_merge_conflict -gt 0 ]
             then
+              echo "line87"
               pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_GITHUB_TOKEN }}" https://api.github.com/repos/map-my-customers/mmc-server/pulls -d '{"title":"Merge master branch into development (Auto Generated PR)","body":"Please pull these awesome changes in!","head":"master","base":"development"}')
               pr_url=$(echo $pr_creation_response | jq .url)
               if [[ "$pr_url" == null ]]
