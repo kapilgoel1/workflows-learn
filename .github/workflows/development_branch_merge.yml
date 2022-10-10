@@ -16,28 +16,41 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
 
-      - name: Run a multi-line script
-        env:
-          SLACK_CHANNEL: c1234
+      - name: Merge branch
+        continue-on-error: true
         run: |
           merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" --fail https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}' || true)
-          echo $merge_result
-          is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
-          echo "test"
-          echo $is_merge_conflict
-          if [ $is_merge_conflict -gt 0 ]
-          then
-            pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/pulls -d '{"title":"Merge development branch into master","body":"Please pull these awesome changes in!","head":"iam2","base":"main"}')
-            pr_url=$(echo $pr_creation_response | jq .url)
-            echo "PR URL IS $pr_url"
-            if [[ "$pr_url" == null ]]
-            then
-              echo "Failed to create a PR. PR may already exists"
-            else
-              echo "slack the pr url"
-              pr_number=$(echo $pr_creation_response | jq .number)
-              echo $pr_number
-              curl -X POST -F channel=$SLACK_CHANNEL -F text=" Merge conflicts between mmc-server development branch and master branch \n $pr_url" https://slack.com/api/chat.postMessage -H "Authorization: ${{ secrets.SECRET_SLACK_TOKEN }}"
-            fi
-          fi
+          run: echo '::set-output name=MERGE_RESULT::${merge_result}'
+        id: merge-branch
+
+      - name: Merge branch output
+        run: echo "The selected color is ${{ steps.merge-branch.outputs.MERGE_RESULT }}"
+
+
+      # - name: Run a multi-line script
+      #   env:
+      #     SLACK_CHANNEL: c1234
+      #   run: |
+      #     merge_result=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" --fail https://api.github.com/repos/kapilgoel1/workflows-learn/merges -d '{"base":"main","head":"iam2","commit_message":"Shipped cool_feature!"}' || true)
+      #     echo $merge_result
+      #     is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+      #     echo "test"
+      #     echo $is_merge_conflict
+      #     if [ $is_merge_conflict -gt 0 ]
+      #     then
+      #       pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_TOKEN }}" https://api.github.com/repos/kapilgoel1/workflows-learn/pulls -d '{"title":"Merge development branch into master","body":"Please pull these awesome changes in!","head":"iam2","base":"main"}')
+      #       pr_url=$(echo $pr_creation_response | jq .url)
+      #       echo "PR URL IS $pr_url"
+      #       if [[ "$pr_url" == null ]]
+      #       then
+      #         echo "Failed to create a PR. PR may already exists"
+      #       else
+      #         echo "slack the pr url"
+      #         pr_number=$(echo $pr_creation_response | jq .number)
+      #         echo $pr_number
+      #         curl -X POST -F channel=$SLACK_CHANNEL -F text=" Merge conflicts between mmc-server development branch and master branch \n $pr_url" https://slack.com/api/chat.postMessage -H "Authorization: ${{ secrets.SECRET_SLACK_TOKEN }}"
+      #       fi
+      #     fi
+
+      
 
