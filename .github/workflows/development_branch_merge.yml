@@ -67,5 +67,33 @@ jobs:
       #       fi
       #     fi
 
-      
+      - name: Merge master into development branch. In case of merge conflicts, create PR and slack its url.
+        env:
+          SLACK_CHANNEL: C03FGPUT8N5
+        run: |
+          merge_result=$(curl -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.SECRET_GITHUB_TOKEN }}" https://api.github.com/repos/map-my-customers/mmc-server/merges \
+          -d '{"base":"main","head":"iam2","commit_message":"Merge master branch!"}')
+          echo "test"
+          if [ -z "$merge_result" ] 
+          then 
+            echo "NULL";
+          else
+            is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+            echo $is_merge_conflict
+            if [ $is_merge_conflict -gt 0 ]
+            then
+              pr_creation_response=$(curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.SECRET_GITHUB_TOKEN }}" https://api.github.com/repos/map-my-customers/mmc-server/pulls -d '{"title":"Merge master branch into development (Auto Generated PR)","body":"Please pull these awesome changes in!","head":"master","base":"development"}')
+              pr_url=$(echo $pr_creation_response | jq .url)
+              if [[ "$pr_url" == null ]]
+              then
+                echo "Failed to create a PR. PR may already exists"
+              else
+                pr_number=$(echo $pr_creation_response | jq .number)
+                echo "slacking"
+              fi
+            fi
+          fi
+
 
