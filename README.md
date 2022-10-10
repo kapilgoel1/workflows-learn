@@ -1,3 +1,3 @@
 "# die-to-learn" 
-"# hate-to-learn"
+"# love-to-learn"
 
