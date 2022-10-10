@@ -30,8 +30,8 @@ jobs:
           if [ $is_merge_conflict -gt 0 ]
           then
             echo "greater than 0"
-
-
+          fi
+        
       # - name: Run a multi-line script
       #   continue-on-error: true
       #   env:
