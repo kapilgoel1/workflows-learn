@@ -25,9 +25,10 @@ jobs:
         id: merge-branch
 
       - name: Merge branch output
+        if: ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT > 0 }}
         run: |
           echo "The selected color is ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }}"
-          if [ $is_merge_conflict -gt 0 ]
+          if [ ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }} -gt 0 ]
           then
             echo "greater than 0"
           fi
