@@ -27,6 +27,7 @@ jobs:
             echo "NULL";
           else
             is_merge_conflict=$(echo $merge_result | grep -c "Merge conflict")
+            echo $is_merge_conflict
           fi
           echo "hello"
         id: merge-branch
