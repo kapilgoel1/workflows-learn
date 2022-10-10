@@ -24,14 +24,14 @@ jobs:
           # echo "::set-output name=IS_MERGE_CONFLICT::${is_merge_conflict}"
         id: merge-branch
 
-      - name: Merge branch output
-        if: ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT > 0 }}
-        run: |
-          echo "The selected color is ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }}"
-          if [ ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }} -gt 0 ]
-          then
-            echo "greater than 0"
-          fi
+      # - name: Merge branch output
+      #   if: ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT > 0 }}
+      #   run: |
+      #     echo "The selected color is ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }}"
+      #     if [ ${{ steps.merge-branch.outputs.IS_MERGE_CONFLICT }} -gt 0 ]
+      #     then
+      #       echo "greater than 0"
+      #     fi
         
       # - name: Run a multi-line script
       #   continue-on-error: true
